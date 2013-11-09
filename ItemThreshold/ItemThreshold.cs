@@ -39,7 +39,7 @@ namespace ItemThreshold
 
 		static readonly Timer Update = new Timer(1000);
 		static int[] Thresholds = new int[256];
-		const int Threshold = 2;
+		const int Threshold = 5;
 
 		public override void Initialize()
 		{
