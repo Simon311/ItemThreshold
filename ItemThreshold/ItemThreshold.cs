@@ -64,10 +64,11 @@ namespace ItemThreshold
 			if (args.MsgID == PacketTypes.ItemDrop)
 			{
 				var num = args.Index;
+				var TPlayer = Main.player[args.Msg.whoAmI];
 				int ItemID = BitConverter.ToInt16(args.Msg.readBuffer, num);
 				if (ItemID == 400)
 				{
-					if (Thresholds[args.Msg.whoAmI] > Threshold)
+					if (Thresholds[args.Msg.whoAmI] > Threshold && !(TPlayer.difficulty > 0 && (TPlayer.dead || TPlayer.statLife < 1)))
 					{
 						TShock.Utils.Kick(TShock.Players[args.Msg.whoAmI], "Item Spam", true);
 						Thresholds[args.Msg.whoAmI] = 0;
