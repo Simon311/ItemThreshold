@@ -94,7 +94,7 @@ namespace ItemThreshold
 				{
 					var Player = Main.player[CorePlayers[i]];
 					if (Player == null || !Player.active) return;
-					if (!Player.dead && Player.statLife > 0) TShock.Utils.Kick(TShock.Players[Player.whoAmi], "Item Spam", true);
+					if (!Player.dead || Player.statLife > 0) TShock.Utils.Kick(TShock.Players[Player.whoAmi], "Item Spam", true);
 				}
 			}
 			Thresholds = new int[256];
