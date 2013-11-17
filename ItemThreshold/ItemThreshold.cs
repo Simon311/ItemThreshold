@@ -39,6 +39,7 @@ namespace ItemThreshold
 
 		static readonly Timer Update = new Timer(1000);
 		static int[] Thresholds = new int[256];
+		static List<int> CorePlayers = new List<int>();
 		const int Threshold = 5;
 
 		public override void Initialize()
@@ -68,8 +69,13 @@ namespace ItemThreshold
 				int ItemID = BitConverter.ToInt16(args.Msg.readBuffer, num);
 				if (ItemID == 400)
 				{
-					if (Thresholds[args.Msg.whoAmI] > Threshold && !(TPlayer.difficulty > 0 && (TPlayer.dead || TPlayer.statLife < 1)))
+					if (Thresholds[args.Msg.whoAmI] > Threshold )
 					{
+						if (TPlayer.difficulty > 0)
+						{
+							if (!CorePlayers.Contains(args.Msg.whoAmI)) CorePlayers.Add(args.Msg.whoAmI);
+							return;
+						}
 						TShock.Utils.Kick(TShock.Players[args.Msg.whoAmI], "Item Spam", true);
 						Thresholds[args.Msg.whoAmI] = 0;
 						args.Handled = true;
@@ -81,8 +87,18 @@ namespace ItemThreshold
 
 		private void OnUpdate(object sender, ElapsedEventArgs e)
 		{
+			if (CorePlayers.Count > 0)
+			{
+				var C = CorePlayers.Count;
+				for (int i = 0; i < C; i++)
+				{
+					var Player = Main.player[CorePlayers[i]];
+					if (Player == null || !Player.active) return;
+					if (!Player.dead && Player.statLife > 0) TShock.Utils.Kick(TShock.Players[Player.whoAmi], "Item Spam", true);
+				}
+			}
 			Thresholds = new int[256];
+			CorePlayers.Clear();
 		}
-
 	}
 }
