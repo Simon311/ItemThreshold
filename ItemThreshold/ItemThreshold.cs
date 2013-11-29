@@ -40,13 +40,12 @@ namespace ItemThreshold
 		static readonly Timer Update = new Timer(1000);
 		static int[] Thresholds = new int[256];
 		static List<int> CorePlayers = new List<int>();
-		const int Threshold = 5;
+		internal static int Threshold = 6;
 
 		public override void Initialize()
 		{
 			ServerApi.Hooks.NetGetData.Register(this, GetData, 10);
-			Update.Elapsed += OnUpdate;
-			Update.Start();
+			ServerApi.Hooks.GameInitialize.Register(this, Initialize, -10);
 		}
 
 		protected override void Dispose(bool disposing)
@@ -58,6 +57,13 @@ namespace ItemThreshold
 				Update.Stop();
 			}
 			base.Dispose(disposing);
+		}
+
+		private void Initialize(EventArgs e)
+		{
+			IConfig.Load();
+			Update.Elapsed += OnUpdate;
+			Update.Start();
 		}
 
 		private void GetData(GetDataEventArgs args)
