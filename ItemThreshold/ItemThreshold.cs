@@ -8,7 +8,7 @@ using TShockAPI;
 
 namespace ItemThreshold
 {
-	[ApiVersion(1, 14)]
+	[ApiVersion(1, 15)]
 	public class ItemThreshold : TerrariaPlugin
 	{
 		public override Version Version
