@@ -8,7 +8,7 @@ using TShockAPI;
 
 namespace ItemThreshold
 {
-	[ApiVersion(1, 23)]
+	[ApiVersion(2, 0)]
 	public class ItemThreshold : TerrariaPlugin
 	{
 		public override Version Version
@@ -44,7 +44,7 @@ namespace ItemThreshold
 
 		public override void Initialize()
 		{
-			ServerApi.Hooks.NetGetData.Register(this, GetData, 10);
+			ServerApi.Hooks.NetGetData.Register(this, GetData, -1);
 			ServerApi.Hooks.GameInitialize.Register(this, Initialize, -10);
 		}
 
@@ -100,13 +100,13 @@ namespace ItemThreshold
 				for (int i = 0; i < I; i++)
 				{
 					var Player = TShock.Players[Exceeded[i]];
-					if (Player == null || Player.TPlayer == null || !Player.TPlayer.active) return;
+					if (Player == null || Player.TPlayer == null || !Player.TPlayer.active) continue;
 					if (!Player.TPlayer.dead || Player.TPlayer.statLife > 0) TShock.Utils.Kick(Player, "Item Spam", true);
 				}
-			}
+                Exceeded.Clear();
+            }
 
 			Thresholds = new int[256];
-			Exceeded.Clear();
 		}
 	}
 }
