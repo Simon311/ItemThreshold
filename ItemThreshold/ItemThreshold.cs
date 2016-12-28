@@ -68,7 +68,7 @@ namespace ItemThreshold
 
 		private void GetData(GetDataEventArgs args)
 		{
-			if (args.MsgID == PacketTypes.ItemDrop)
+			if (args.MsgID == PacketTypes.ItemDrop || args.MsgID == PacketTypes.UpdateItemDrop)
 			{
 				var num = args.Index;
 				var TPlayer = Main.player[args.Msg.whoAmI];
