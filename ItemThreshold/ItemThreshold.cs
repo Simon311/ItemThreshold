@@ -68,7 +68,7 @@ namespace ItemThreshold
 
 		private void GetData(GetDataEventArgs args)
 		{
-			if (args.MsgID == PacketTypes.ItemDrop || args.MsgID == PacketTypes.UpdateItemDrop)
+			if (args.MsgID == PacketTypes.ItemDrop)
 			{
 				var num = args.Index;
 				var TPlayer = Main.player[args.Msg.whoAmI];
@@ -89,6 +89,11 @@ namespace ItemThreshold
 					}
 					else Thresholds[args.Msg.whoAmI]++;
 				}
+			}
+			else if (args.MsgID == PacketTypes.UpdateItemDrop)
+			{
+				TShock.Utils.Kick(TShock.Players[args.Msg.whoAmI], "Item Cheat", true);
+				args.Handled = true;
 			}
 		}
 
